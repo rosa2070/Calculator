@@ -204,6 +204,8 @@ class MainActivity : AppCompatActivity() {
                     val historyView = LayoutInflater.from(this).inflate(R.layout.history_row, null, false)
                     historyView.findViewById<TextView>(R.id.expressionTextView).text = it.expression
                     historyView.findViewById<TextView>(R.id.resultTextView).text = "= ${it.result}"
+
+                    historyLinearLayout.addView(historyView)
                 }
 
             }
@@ -218,8 +220,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun historyClearButtonClicked(v: View) {
-        // TODO 디비에서 모든 기록 삭제
-        // TODO 뷰에서 모든 기록 삭제
+        historyLinearLayout.removeAllViews()
+
+        Thread(Runnable {
+            db.historyDao().deleteAll()
+        }).start()
     }
 
 }
